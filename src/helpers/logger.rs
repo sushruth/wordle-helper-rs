@@ -1,11 +1,17 @@
-static enabled: bool = true;
+pub struct Logger {
+    pub enabled: bool,
+}
 
-pub fn log(message: &str) {
-    if enabled {
-        println!("{}", message);
+impl Logger {
+    pub fn silence(&mut self) {
+        self.enabled = false;
+    }
+
+    pub fn log(&self, message: &str) {
+        if self.enabled {
+            println!("{}", message);
+        }
     }
 }
 
-pub fn silence() {
-    enabled = false;
-}
+pub(crate) static LOGGER: Logger = Logger { enabled: true };

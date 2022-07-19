@@ -42,7 +42,7 @@ impl Game {
                     letter,
                     position: index,
                 });
-                goal_word_copy.replace_range(index..index, "-")
+                goal_word_copy.replace_range(index..(index + 1), "-");
             } else if !self.goal_word.contains(*&letter) {
                 result[index] = Some(LetterResult {
                     color: LetterResultColor::Black,
@@ -53,24 +53,23 @@ impl Game {
         }
 
         for index in 0..input.len() {
-            match result[index] {
-                None => {
-                    let letter = input.chars().nth(index).unwrap();
+            let letter = input.chars().nth(index).unwrap();
 
-                    if goal_word_copy.contains(*&letter) {
-                        result[index] = Some(LetterResult {
-                            color: LetterResultColor::Yellow,
-                            letter,
-                            position: index,
-                        });
-                        goal_word_copy = goal_word_copy.replace(&letter.to_string(), "-")
-                    } else {
-                        result[index] = Some(LetterResult {
-                            color: LetterResultColor::Black,
-                            letter,
-                            position: index,
-                        });
-                    }
+            match result[index] {
+                None if goal_word_copy.contains(*&letter) => {
+                    result[index] = Some(LetterResult {
+                        color: LetterResultColor::Yellow,
+                        letter,
+                        position: index,
+                    });
+                    goal_word_copy = goal_word_copy.replace(&letter.to_string(), "-");
+                }
+                None => {
+                    result[index] = Some(LetterResult {
+                        color: LetterResultColor::Black,
+                        letter,
+                        position: index,
+                    });
                 }
                 Some(_) => {}
             }
