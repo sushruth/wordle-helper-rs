@@ -17,7 +17,7 @@ impl Game {
         return PROBLEMS.choose(&mut rng).unwrap().to_string();
     }
 
-    pub fn new(input: Option<&Word>, logger: &Logger) -> Game {
+    pub fn new(input: &Option<Word>, logger: &Logger) -> Game {
         let new_goal_word = match input {
             Some(word) => word.to_string(),
             None => Game::new_random_goal_word(),

@@ -31,9 +31,9 @@ pub fn guess_next_word(
         }
     };
 
-    for ele in highest_score_words {
-        if !guessed_words.contains(&ele) {
-            return ele;
+    for word in highest_score_words {
+        if !guessed_words.contains(&word) {
+            return word;
         }
     }
 

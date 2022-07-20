@@ -1,5 +1,5 @@
 use crate::{
-    game::evaluate::Game,
+    game::Game,
     helpers::{
         logger::Logger,
         pretty_print::pretty_print_result,

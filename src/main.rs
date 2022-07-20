@@ -5,7 +5,7 @@ mod player;
 use clap::Parser;
 use std::time::Instant;
 
-use crate::{game::evaluate::Game, helpers::logger::Logger, player::player::Player};
+use crate::{game::Game, helpers::logger::Logger, player::player::Player};
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -13,7 +13,7 @@ use crate::{game::evaluate::Game, helpers::logger::Logger, player::player::Playe
 struct Args {
     /// The name of the person to greet.
     #[clap(short, long, parse(try_from_str))]
-    word: String,
+    word: Option<String>,
 
     /// Whether to print the greeting or not.
     #[clap(short, long)]
@@ -28,7 +28,7 @@ fn main() {
     };
 
     logger.log("---------------");
-    let game = Game::new(Some(&args.word), &logger);
+    let game = Game::new(&args.word, &logger);
     logger.log("---------------");
 
     let mut player = Player::new();
