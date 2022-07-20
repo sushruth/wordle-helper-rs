@@ -13,7 +13,7 @@ mod pretty_print_result;
 use crate::pretty_print_result::pretty_print_result;
 use clap::Parser;
 use evaluate::Game;
-use logger::LOGGER;
+use logger::Logger;
 use pretty_print_result::pretty_print_word;
 
 /// Simple program to greet a person
@@ -34,14 +34,18 @@ fn main() {
 
     let game = Game::new(Some(&args.word));
 
-    LOGGER.log("---------------");
+    let logger = Logger {
+        enabled: !args.silent,
+    };
 
-    pretty_print_word(&game.goal_word);
+    logger.log("---------------");
 
-    LOGGER.log("---------------");
+    pretty_print_word(&game.goal_word, &logger);
+
+    logger.log("---------------");
 
     match game.is_this_the_word(&"saree".to_string()) {
-        Ok(result) => pretty_print_result(result),
+        Ok(result) => pretty_print_result(result, &logger),
         Err(err) => println!("Error: {}", err),
     }
 }

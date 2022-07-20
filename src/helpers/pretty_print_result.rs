@@ -1,11 +1,11 @@
 use termion::color;
 
 use crate::{
-    logger::LOGGER,
+    logger::Logger,
     types::{LetterResultColor, WordResult},
 };
 
-pub fn pretty_print_result(result: WordResult) {
+pub fn pretty_print_result(result: WordResult, logger: &Logger) {
     let mut str = String::new();
 
     for letter_result in result {
@@ -33,16 +33,15 @@ pub fn pretty_print_result(result: WordResult) {
             }
         }
     }
-
-    LOGGER.log(&format!("{}{}", str, color::Bg(color::Reset)))
+    logger.log(&format!("{}{}", str, color::Bg(color::Reset)))
 }
 
-pub fn pretty_print_word(word: &str) {
+pub fn pretty_print_word(word: &str, logger: &Logger) {
     let mut str = String::new();
 
     for letter in word.chars() {
         str += &format!(" {} ", letter.to_uppercase());
     }
 
-    LOGGER.log(&format!("{}", str));
+    logger.log(&format!("{}", str));
 }
