@@ -10,11 +10,13 @@ pub fn guess_next_word(
     guessed_words: &WordList,
     green_results: &Vec<LetterResult>,
 ) -> String {
-    if filtered_word_list.len() == PROBLEMS.len() {
+    let len = filtered_word_list.len();
+
+    if len == PROBLEMS.len() {
         return "saree".to_string();
     }
 
-    if filtered_word_list.len() == 1 {
+    if len == 1 {
         return filtered_word_list[0].to_string();
     }
 
@@ -111,7 +113,7 @@ fn get_lps_word_map(
             seen_letters.push(letter);
         }
 
-        if highest_score < score {
+        if highest_score <= score {
             highest_score = score;
         }
 
