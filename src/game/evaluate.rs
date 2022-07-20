@@ -30,11 +30,11 @@ impl Game {
         }
 
         let mut result: Vec<Option<LetterResult>> = vec![None; input.len()];
-        let mut goal_word_copy = self.goal_word.clone();
+        let mut goal_word_array = self.goal_word.clone().chars().collect::<Vec<char>>();
 
         for index in 0..input.len() {
             let letter = input.chars().nth(index).unwrap();
-            let goal_letter = goal_word_copy.chars().nth(index).unwrap();
+            let goal_letter = goal_word_array[index];
 
             if letter == goal_letter {
                 result[index] = Some(LetterResult {
@@ -42,7 +42,7 @@ impl Game {
                     letter,
                     position: index,
                 });
-                goal_word_copy.replace_range(index..(index + 1), "-");
+                goal_word_array[index] = '-';
             } else if !self.goal_word.contains(*&letter) {
                 result[index] = Some(LetterResult {
                     color: LetterResultColor::Black,
@@ -56,13 +56,18 @@ impl Game {
             let letter = input.chars().nth(index).unwrap();
 
             match result[index] {
-                None if goal_word_copy.contains(*&letter) => {
+                None if goal_word_array.contains(&letter) => {
                     result[index] = Some(LetterResult {
                         color: LetterResultColor::Yellow,
                         letter,
                         position: index,
                     });
-                    goal_word_copy = goal_word_copy.replace(&letter.to_string(), "-");
+
+                    for i in 0..goal_word_array.len() {
+                        if letter == goal_word_array[i] {
+                            goal_word_array[i] = '-';
+                        }
+                    }
                 }
                 None => {
                     result[index] = Some(LetterResult {
