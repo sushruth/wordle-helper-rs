@@ -22,7 +22,7 @@ impl Player {
     pub fn new() -> Player {
         return Player {
             attempts: 0,
-            filtered_words: PROBLEMS.to_vec(),
+            filtered_words: PROBLEMS.clone().to_vec(),
             green_results: Vec::new(),
             guessed_word_history: WordList::new(),
             last_result: WordResult::new(),
