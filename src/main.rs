@@ -15,6 +15,7 @@ use clap::Parser;
 use evaluate::Game;
 use logger::Logger;
 use pretty_print_result::pretty_print_word;
+use std::time::Instant;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -30,6 +31,7 @@ struct Args {
 }
 
 fn main() {
+    let now = Instant::now();
     let args = Args::parse();
 
     let game = Game::new(Some(&args.word));
@@ -48,4 +50,7 @@ fn main() {
         Ok(result) => pretty_print_result(result, &logger),
         Err(err) => println!("Error: {}", err),
     }
+
+    let elapsed_time = now.elapsed();
+    println!("took {} milliseconds.", elapsed_time.as_millis());
 }
