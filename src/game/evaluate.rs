@@ -1,26 +1,32 @@
-use crate::{
+use rand::seq::SliceRandom;
+
+use crate::helpers::{
+    logger::Logger,
+    pretty_print::pretty_print_word,
     types::{LetterResult, LetterResultColor, Word, WordResult},
     words::{DICTIONARY, PROBLEMS},
 };
-use rand::seq::SliceRandom;
 
 pub struct Game {
-    pub goal_word: Word,
+    goal_word: Word,
 }
 
 impl Game {
-    fn new_random() -> Game {
+    fn new_random_goal_word() -> Word {
         let mut rng = rand::thread_rng();
-        let goal_word = PROBLEMS.choose(&mut rng).unwrap().to_string();
-        return Game { goal_word };
+        return PROBLEMS.choose(&mut rng).unwrap().to_string();
     }
 
-    pub fn new(input: Option<&Word>) -> Game {
-        return match input {
-            Some(word) => Game {
-                goal_word: word.to_string(),
-            },
-            None => Game::new_random(),
+    pub fn new(input: Option<&Word>, logger: &Logger) -> Game {
+        let new_goal_word = match input {
+            Some(word) => word.to_string(),
+            None => Game::new_random_goal_word(),
+        };
+
+        pretty_print_word(&new_goal_word, logger);
+
+        return Game {
+            goal_word: new_goal_word,
         };
     }
 

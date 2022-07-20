@@ -1,11 +1,11 @@
 use termion::color;
 
-use crate::{
+use super::{
     logger::Logger,
     types::{LetterResultColor, WordResult},
 };
 
-pub fn pretty_print_result(result: WordResult, logger: &Logger) {
+pub fn pretty_print_result(result: &WordResult, logger: &Logger) {
     let mut str = String::new();
 
     for letter_result in result {

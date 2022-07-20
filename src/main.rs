@@ -1,21 +1,11 @@
-mod types;
-mod words;
+mod game;
+mod helpers;
+mod player;
 
-#[path = "game/evaluate.rs"]
-mod evaluate;
-
-#[path = "helpers/logger.rs"]
-mod logger;
-
-#[path = "helpers/pretty_print_result.rs"]
-mod pretty_print_result;
-
-use crate::pretty_print_result::pretty_print_result;
 use clap::Parser;
-use evaluate::Game;
-use logger::Logger;
-use pretty_print_result::pretty_print_word;
 use std::time::Instant;
+
+use crate::{game::evaluate::Game, helpers::logger::Logger, player::player::Player};
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -33,23 +23,17 @@ struct Args {
 fn main() {
     let now = Instant::now();
     let args = Args::parse();
-
-    let game = Game::new(Some(&args.word));
-
     let logger = Logger {
         enabled: !args.silent,
     };
 
     logger.log("---------------");
-
-    pretty_print_word(&game.goal_word, &logger);
-
+    let game = Game::new(Some(&args.word), &logger);
     logger.log("---------------");
 
-    match game.is_this_the_word(&"saree".to_string()) {
-        Ok(result) => pretty_print_result(result, &logger),
-        Err(err) => println!("Error: {}", err),
-    }
+    let mut player = Player::new();
+
+    player.play_game(&game, &logger);
 
     let elapsed_time = now.elapsed();
     println!("took {} milliseconds.", elapsed_time.as_millis());
