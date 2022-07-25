@@ -9,7 +9,7 @@ use std::time::Instant;
 use crate::{
     game::Game,
     helpers::{logger::Logger, types::Word, words::PROBLEMS},
-    player::player::Player,
+    player::logic::Player,
 };
 
 /// A CLI tool to play wordle.
