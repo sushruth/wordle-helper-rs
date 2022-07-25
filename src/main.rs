@@ -27,6 +27,9 @@ struct Args {
 
     #[clap(value_parser, default_value_t = 1)]
     count: usize,
+
+    #[clap(short, long)]
+    online: bool,
 }
 
 fn play_one_game(player: &mut Player, word: &Option<Word>, logger: &Logger) {
@@ -40,7 +43,7 @@ fn play_one_game(player: &mut Player, word: &Option<Word>, logger: &Logger) {
 fn main() {
     let now = Instant::now();
     let args = Args::parse();
-    let logger = Logger {
+    let mut logger = Logger {
         enabled: !args.silent,
     };
 
@@ -49,8 +52,14 @@ fn main() {
             play_one_game(&mut Player::new(), &Some(word.to_string()), &logger);
         });
     } else {
-        for _ in 0..args.count {
-            play_one_game(&mut Player::new(), &args.word, &logger);
+        if args.online {
+            let mut player = Player::new();
+            logger = Logger { enabled: true };
+            player.play_game_online(&logger);
+        } else {
+            for _ in 0..args.count {
+                play_one_game(&mut Player::new(), &args.word, &logger);
+            }
         }
     }
 
