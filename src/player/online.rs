@@ -39,9 +39,9 @@ pub fn ask_online_result<'a>(logger: &'a Logger, word: &'a Word) -> Result<WordR
                     break 'outer;
                 }
             }
-            Err(_) => return Err(&"Error reading input"),
+            Err(_) => return Err("Error reading input"),
         }
     }
 
-    return Ok(result);
+    Ok(result)
 }

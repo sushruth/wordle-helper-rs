@@ -39,10 +39,10 @@ struct Args {
 
 fn play_one_game(player: &mut Player, word: &Option<Word>, logger: &Logger) {
     logger.log("---------------");
-    let game = Game::new(word, &logger);
+    let game = Game::new(word, logger);
     logger.log("---------------");
 
-    player.play_game(&game, &logger);
+    player.play_game(&game, logger);
 }
 
 fn main() {
@@ -56,15 +56,13 @@ fn main() {
         PROBLEMS.par_iter().for_each(|word| {
             play_one_game(&mut Player::new(), &Some(word.to_string()), &logger);
         });
+    } else if args.online {
+        let mut player = Player::new();
+        logger = Logger { enabled: true };
+        player.play_game_online(&logger);
     } else {
-        if args.online {
-            let mut player = Player::new();
-            logger = Logger { enabled: true };
-            player.play_game_online(&logger);
-        } else {
-            for _ in 0..args.count {
-                play_one_game(&mut Player::new(), &args.word, &logger);
-            }
+        for _ in 0..args.count {
+            play_one_game(&mut Player::new(), &args.word, &logger);
         }
     }
 

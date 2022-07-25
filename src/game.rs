@@ -25,13 +25,13 @@ impl Game {
 
         pretty_print_word(&new_goal_word, logger);
 
-        return Game {
+        Game {
             goal_word: new_goal_word,
-        };
+        }
     }
 
     pub fn is_this_the_word(&self, input: &Word) -> Result<WordResult, &str> {
-        if !(DICTIONARY.contains(&input) || PROBLEMS.contains(&input)) {
+        if !(DICTIONARY.contains(input) || PROBLEMS.contains(input)) {
             return Err("Word not in dictionary");
         }
 
@@ -49,7 +49,7 @@ impl Game {
                     position: index,
                 });
                 goal_word_array[index] = '-';
-            } else if !self.goal_word.contains(*&letter) {
+            } else if !self.goal_word.contains(letter) {
                 result[index] = Some(LetterResult {
                     color: LetterResultColor::Black,
                     letter,
@@ -86,6 +86,6 @@ impl Game {
             }
         }
 
-        return Ok(result.into_iter().filter_map(|x| x).collect());
+        Ok(result.into_iter().flatten().collect())
     }
 }

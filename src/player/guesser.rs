@@ -21,9 +21,9 @@ pub fn guess_next_word(
     }
 
     let lps = get_lps(filtered_word_list);
-    let (problem_score_map, problem_high_score) = get_lps_word_map(&PROBLEMS, &lps, &green_results);
+    let (problem_score_map, problem_high_score) = get_lps_word_map(&PROBLEMS, &lps, green_results);
     let (dictionary_score_map, dictionary_high_score) =
-        get_lps_word_map(&DICTIONARY, &lps, &green_results);
+        get_lps_word_map(&DICTIONARY, &lps, green_results);
 
     let highest_score_words = {
         if problem_high_score > dictionary_high_score {
@@ -39,7 +39,7 @@ pub fn guess_next_word(
         }
     }
 
-    return filtered_word_list[0].to_string();
+    filtered_word_list[0].to_string()
 }
 
 fn get_lps(filtered_word_list: &WordList) -> LetterPositionScore {
@@ -60,7 +60,7 @@ fn get_lps(filtered_word_list: &WordList) -> LetterPositionScore {
         }
     }
 
-    return lps;
+    lps
 }
 
 fn get_lps_word_map(
@@ -75,7 +75,7 @@ fn get_lps_word_map(
 
     for position_score in lps {
         for key in position_score.keys() {
-            lps_letters.push(key.clone());
+            lps_letters.push(*key);
         }
     }
 
@@ -99,7 +99,7 @@ fn get_lps_word_map(
             } else if green_letters.contains(&letter) {
                 score -= 1;
             } else {
-                let mut delta = lps[i].get(&letter).unwrap_or(&0).clone();
+                let mut delta = *lps[i].get(&letter).unwrap_or(&0);
                 if seen_letters.contains(&letter) {
                     delta -= 2;
                 }
@@ -122,7 +122,7 @@ fn get_lps_word_map(
         }
     }
 
-    return (score_map, highest_score);
+    (score_map, highest_score)
 }
 
 fn get_highest_score_words(score_map: &HashMap<Word, Score>, highest_score: &Score) -> WordList {
@@ -134,5 +134,5 @@ fn get_highest_score_words(score_map: &HashMap<Word, Score>, highest_score: &Sco
         }
     }
 
-    return highest_score_words;
+    highest_score_words
 }

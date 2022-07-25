@@ -30,14 +30,12 @@ pub fn filter_word_list(
                 if result.color == LetterResultColor::Yellow {
                     if !word_array.contains(&result.letter) {
                         return false;
+                    } else if word_array[result.position] == result.letter {
+                        return false;
                     } else {
-                        if word_array[result.position] == result.letter {
-                            return false;
-                        } else {
-                            for i in 0..word_array.len() {
-                                if word_array[i] == result.letter {
-                                    word_array[i] = '-';
-                                }
+                        for i in 0..word_array.len() {
+                            if word_array[i] == result.letter {
+                                word_array[i] = '-';
                             }
                         }
                     }
@@ -59,10 +57,9 @@ pub fn filter_word_list(
                 }
             }
 
-            return true;
-        })
-        .map(|x| x.clone())
+            true
+        }).cloned()
         .collect::<Vec<Word>>();
 
-    return filtered_words;
+    filtered_words
 }

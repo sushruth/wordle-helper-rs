@@ -43,5 +43,5 @@ pub fn pretty_print_word(word: &str, logger: &Logger) {
         str += &format!(" {} ", letter.to_uppercase());
     }
 
-    logger.log(&format!("{}", str));
+    logger.log(&str.to_string());
 }
