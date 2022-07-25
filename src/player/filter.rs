@@ -28,9 +28,9 @@ pub fn filter_word_list(
             // must have yellow letters in different positions
             for result in last_result {
                 if result.color == LetterResultColor::Yellow {
-                    if !word_array.contains(&result.letter) {
-                        return false;
-                    } else if word_array[result.position] == result.letter {
+                    if !word_array.contains(&result.letter)
+                        || word_array[result.position] == result.letter
+                    {
                         return false;
                     } else {
                         for i in 0..word_array.len() {
@@ -58,7 +58,8 @@ pub fn filter_word_list(
             }
 
             true
-        }).cloned()
+        })
+        .cloned()
         .collect::<Vec<Word>>();
 
     filtered_words
