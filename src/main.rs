@@ -12,22 +12,27 @@ use crate::{
     player::player::Player,
 };
 
-/// Simple program to greet a person
+/// A CLI tool to play wordle.
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
+    /// Word to play wordle with. If not specified, a random word will be chosen.
     #[clap(short, long, parse(try_from_str))]
     word: Option<String>,
 
+    /// Don't log to stdout.
     #[clap(short, long)]
     silent: bool,
 
+    /// Play wordle for all words in the problem list.
     #[clap(short, long)]
     all: bool,
 
+    /// Play wordle these many times.
     #[clap(value_parser, default_value_t = 1)]
     count: usize,
 
+    /// Run in online wordle helper mode.
     #[clap(short, long)]
     online: bool,
 }
